@@ -30,9 +30,9 @@ GoogleChart::LineChart.new do |lc|
   lc.title = "Line Chart"
   lc.show_legend = true
 
-  lc.data "Trend 1", [5,4,3,1,3,5,6], '0000ff'
-  lc.data "Trend 2", [1,2,3,4,5,6], '00ff00'
-  lc.data "Trend 3", [6,5,4,3,2,1], 'ff0000'
+  lc.data "Trend 1", [5,4,3,1,3,5,6], '0000ff', '5,0,0'
+  lc.data "Trend 2", [1,2,3,4,5,6], '00ff00', '3,6,3'
+  lc.data "Trend 3", [6,5,4,3,2,1], 'ff0000', '3,6,3'
 
   lc.axis(:left) do |axis|
     axis.alignment = :center

@@ -11,7 +11,7 @@ module GoogleChart
       @data << series
       legend(legend)
       color(color)
-      line_parameter(line_params) if respond_to?(:line_parameter)
+      line_parameter(line_params) if self.private_methods.include?(:line_parameter)
     end
 
     def encode_data

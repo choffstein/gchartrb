@@ -106,7 +106,8 @@ module GoogleChart
       add_axes    if @axes
       add_grid    if @grid
       add_markers if @markers
-      add_line_parameters if @line_parameters and respond_to?(:add_line_parameters)
+      add_line_parameters if @line_parameters
+      
       add_bar_width_and_spacing if respond_to?(:add_bar_width_and_spacing)
       add_map_parameters if respond_to?(:add_map_parameters)
       add_additional_parameters if respond_to?(:add_additional_parameters)
