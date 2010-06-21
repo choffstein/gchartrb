@@ -6,11 +6,12 @@ module GoogleChart
       mod.send(:extend,ClassMethods)
     end
 
-    def data(legend, series, color = nil)
+    def data(legend, series, color = nil, line_params = nil)
       raise ArgumentError.new("Invalid value for series data") unless series.send(self.class.get_data_type)
       @data << series
       legend(legend)
       color(color)
+      line_parameter(line_params) if respond_to?(:line_parameter)
     end
 
     def encode_data

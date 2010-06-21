@@ -1,5 +1,5 @@
 module GoogleChart
-  # This module is used as a mixin for providing Line Parameters
+  # This module is used as a mixin for providing line parameter functionality for line-charts
   module LineParameter
 
     private

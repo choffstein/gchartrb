@@ -1,5 +1,5 @@
 require File.dirname(__FILE__) + "/core_ext"
-%w(legend color data_array fills axis grid markers label).each do |mod|
+%w(legend color data_array fills axis grid markers label line_parameter).each do |mod|
     require File.dirname(__FILE__) + "/google_chart/modules/#{mod}"
 end
 

@@ -2,6 +2,7 @@ module GoogleChart
   class LineChart < Base
     include Legend
     include Color
+    include LineParameter
     include DataArray
     include Fills
     include Axis
