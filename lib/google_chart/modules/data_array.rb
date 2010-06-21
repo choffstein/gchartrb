@@ -47,9 +47,9 @@ module GoogleChart
         @data_type = type
 
         if @data_type == :numeric_2d_array
-          attr_accessor :max_x, :max_y
+          attr_accessor :max_x, :max_y, :min_x, :min_y
         else
-          attr_accessor :max
+          attr_accessor :max, :min
         end
       end
 

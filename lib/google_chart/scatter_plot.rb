@@ -27,7 +27,7 @@ module GoogleChart
     def encode_data
       sets = super
       unless @point_sizes.empty?
-        sets << @point_sizes.collect { |d| GoogleChart::encode(encoding,d,@point_sizes.max) }.join(get_data_separator)
+        sets << @point_sizes.collect { |d| GoogleChart::encode(encoding,d,@point_sizes.min,@point_sizes.max) }.join(get_data_separator)
       end
     end
   end
