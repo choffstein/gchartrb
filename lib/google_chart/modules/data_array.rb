@@ -16,21 +16,26 @@ module GoogleChart
     def encode_data
       if @data.first.is_a?(Numeric)
         max_val = (self.max or @data.max)
-        sets = [@data.collect { |d| GoogleChart::encode(encoding,d,max_val)}.join(get_data_separator)]
+        min_val = (self.min or @data.min)
+        sets = [@data.collect { |d| GoogleChart::encode(encoding,d, min_val, max_val)}.join(get_data_separator)]
       elsif @data.first.is_numeric_2d_array? # Check if each data is an array of 2d values
         x_values = @data.collect { |item| item.x_values }
         y_values = @data.collect { |item| item.y_values }
 
         x_max_val = (max_x or x_values.flatten.max)
         y_max_val = (max_y or y_values.flatten.max)
+        
+        x_min_val = (min_x or x_values.flatten.min)
+        y_min_val = (min_y or y_values.flatten.min)
 
-        x_sets = x_values.collect { |set| set.collect{ |d| GoogleChart::encode(encoding,d,x_max_val)}.join(get_data_separator) }
-        y_sets = y_values.collect { |set| set.collect{ |d| GoogleChart::encode(encoding,d,y_max_val)}.join(get_data_separator) }
+        x_sets = x_values.collect { |set| set.collect{ |d| GoogleChart::encode(encoding, d, x_min_val, x_max_val)}.join(get_data_separator) }
+        y_sets = y_values.collect { |set| set.collect{ |d| GoogleChart::encode(encoding, d, y_min_val, y_max_val)}.join(get_data_separator) }
 
         sets = x_sets.zip(y_sets).collect { |item| item.join(get_series_separator) }
       elsif @data.first.is_numeric_array?
         max_val = (self.max or @data.flatten.max)
-        sets = @data.collect { |set| set.collect{ |d| GoogleChart::encode(encoding,d,max_val)}.join(get_data_separator) }
+        min_val = (self.min or @data.flatten.min)
+        sets = @data.collect { |set| set.collect{ |d| GoogleChart::encode(encoding, d, min_val, max_val)}.join(get_data_separator) }
       end
       return sets
     end

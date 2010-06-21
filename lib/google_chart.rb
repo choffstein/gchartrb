@@ -20,17 +20,29 @@ module GoogleChart
 
     # Encode +n+ as a string. +n+ is normalized based on +max+.
     # Blatantly copied from GChart (http://gchart.rubyforge.org)
-    def encode(encoding, n, max)
+    def encode(encoding, n, min, max)
       case encoding
       when :simple
         return "_" if n.nil?
-        SIMPLE_CHARS[((n.zero? ? 0 : n/max.to_f) * (SIMPLE_CHARS.size - 1)).round]
+        if min == max
+            SIMPLE_CHARS[((n.zero? ? 0 : n/max.to_f) * (SIMPLE_CHARS.size - 1)).round]
+        else
+            SIMPLE_CHARS[((n.zero? ? 0 : (n-min.to_f)/(max.to_f - min.to_f) * (SIMPLE_CHARS.size - 1))).round]
+        end
       when :text
         return "-1" if n.nil?
-        ((((n.zero? ? 0 : n/max.to_f) * 1000.0).round)/10.0).to_s
+        if min == max
+            ((((n.zero? ? 0 : n/max.to_f) * 1000.0).round)/10.0).to_s
+        else
+            ((((n.zero? ? 0 : (n-min.to_f)/(max.to_f-min.to_f)) * 1000.0).round)/10.0).to_s
+        end
       when :extended
         return "__" if n.nil?
-        EXTENDED_PAIRS[max.zero? ? 0 : ((n/max.to_f) * (EXTENDED_PAIRS.size - 1)).round]
+        if min == max
+            EXTENDED_PAIRS[max.zero? ? 0 : ((n/max.to_f) * (EXTENDED_PAIRS.size - 1)).round]
+        else
+            EXTENDED_PAIRS[max.zero? ? 0 : (((n - min.to_f)/(max.to_f-min.to_f)) * (EXTENDED_PAIRS.size - 1)).round]
+        end
       else
         raise ArgumentError, "unsupported encoding: #{encoding.inspect}"
       end
