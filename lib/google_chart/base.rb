@@ -1,5 +1,6 @@
 require 'open-uri'
 require 'uri'
+require 'net/http'
 
 module GoogleChart
   class Base
@@ -117,11 +118,21 @@ module GoogleChart
     # Returns a URL to access the chart.
     # Use +extras+ to add more parameters that may be unsupported or impossible to construct using gchartrb
     def to_url(extras={})
-      query = query_params.merge(extras).collect { |k, v| "#{k}=#{URI.escape(v)}" }.join("&")
+      query = generate_query(extras)
       "#{GoogleChart::URL}?#{query}"
     end
 
+    def fetch_image(extras={})
+      response, data = Net::HTTP.post_form(URI.parse(GoogleChart::URL),
+                                           query_params.merge(extras))
+      return data
+    end
+
     private
+
+    def generate_query(extras={})
+      return query_params.merge(extras).collect { |k, v| "#{k}=#{URI.escape(v)}" }.join("&")
+    end
 
     def add_defaults
       @params[:cht] = chart_type

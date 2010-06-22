@@ -30,9 +30,9 @@ GoogleChart::LineChart.new do |lc|
   lc.title = "Line Chart"
   lc.show_legend = true
 
-  lc.data "Trend 1", [5,4,3,1,3,5,6], '0000ff', '5,0,0'
-  lc.data "Trend 2", [1,2,3,4,5,6], '00ff00', '3,6,3'
-  lc.data "Trend 3", [6,5,4,3,2,1], 'ff0000', '3,6,3'
+  lc.data "Trend 1", [5,4,3,1,3,5,6], '224499', '5,0,0'
+  lc.data "Trend 2", [1,2,3,4,5,6], 'ff0000', '3,6,3'
+  lc.data "Trend 3", [6,5,4,3,2,1], '80C65A', '3,6,3'
 
   lc.axis(:left) do |axis|
     axis.alignment = :center
@@ -219,6 +219,30 @@ mc = GoogleChart::MapChart.new do |chart|
   
   puts "\nMap Chart"
   puts chart.to_url
+end
+
+# Line Chart
+GoogleChart::StackedArea.new do |sa|
+  sa.title = "Stacked Area"
+  sa.show_legend = true
+
+  sa.data "Trend 1", [1,4,3,4,3,6], '76A4FB'
+  sa.data "Trend 2", [0,2,3,4,5,6], '80C65A'
+  sa.data "Trend 3", [6,5,4,4,2,1], 'FF0000'
+
+  sa.axis(:left) do |axis|
+    axis.alignment = :center
+    axis.color = "ff00ff"
+    axis.font_size = 16
+    axis.range = 0..1
+  end
+
+  sa.axis :bottom, :alignment => :center, :color => "ff00ff", :font_size => 16, :range => 0..6
+  sa.grid :x_step => 100.0/6.0, :y_step => 100.0/6.0, :line_segment => 1, :blank_segment => 0
+
+  puts "\nStacked Area"
+  puts sa.fetch_image
+  puts sa.to_url
 end
 
 __END__

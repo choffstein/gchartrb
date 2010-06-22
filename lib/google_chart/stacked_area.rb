@@ -14,6 +14,7 @@ module GoogleChart
         def initialize(options={})
           @chart_type="lc"
           @show_legend = false
+          @encoded = false
           super(options)
         end
 
@@ -36,25 +37,30 @@ module GoogleChart
         private
         def encode_data
           total_entries = @data.size
-          
-          @data_length.times { |i|
-            # re-format the data
 
-            local_max = @data[total_entries-1][i].to_f
+          # only perform the special encode on the data once
+          if !@encoded
+            @data_length.times { |i|
+              # re-format the data
 
-            total_entries.times { |j|
-              @data[j][i] = @data[j][i].to_f / local_max 
+              local_max = @data[total_entries-1][i].to_f
+
+              total_entries.times { |j|
+                @data[j][i] = @data[j][i].to_f / local_max
+              }
             }
-          }
 
-          # This will overwrite each data line with black
-          @data.clone.each { |a|
-            @data << a # copy each element to the back of data again
-            color("000000") #give it a black color
-          }
+            # This will overwrite each data line with black
+            @data.clone.each { |a|
+              @data << a # copy each element to the back of data again
+              color("000000") #give it a black color
+            }
 
-          # add our min to the front
-          @data.unshift(Array.new(@data_length, 0.0))
+            # add our min to the front
+            @data.unshift(Array.new(@data_length, 0.0))
+
+            @encoded = true
+          end
           
           @params[:chm] ||= []
           @area_colors.size.times { |i|
