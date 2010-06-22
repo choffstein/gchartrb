@@ -8,7 +8,11 @@ module GoogleChart
     end
 
     def add_colors
-      @params[:chco] = @colors.compact.join(",") unless @colors.compact.empty?
+        if @chart_type == "s"
+            @params[:chco] = @colors.flatten.compact.join("|") unless @colors.compact.empty?
+        else
+            @params[:chco] = @colors.flatten.compact.join(",") unless @colors.compact.empty?
+        end
     end
 
   end

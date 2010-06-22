@@ -127,6 +127,12 @@ module GoogleChart
                                            query_params.merge(extras))
       return data
     end
+    
+    def write_to(filename, extras={})
+        File.open("#{filename}.png", "w") { |f|
+            f << fetch_image(extras)
+        }
+    end
 
     private
 
