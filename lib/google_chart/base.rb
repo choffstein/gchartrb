@@ -2,6 +2,17 @@ require 'open-uri'
 require 'uri'
 require 'net/http'
 
+class Hash
+    def gentle_merge(other)
+        new_hash = self.dup
+        other.keys.each { |k|
+            new_hash[k] = other[k] if new_hash[k].nil?
+            new_hash[k] = [new_hash[k], other[k]].join('|') unless new_hash[k].nil?
+        }
+        return new_hash
+    end
+end
+
 module GoogleChart
   class Base
     # Make new method private to avoid direct initialisation
@@ -124,7 +135,7 @@ module GoogleChart
 
     def fetch_image(extras={})
       response, data = Net::HTTP.post_form(URI.parse(GoogleChart::URL),
-                                           query_params.merge(extras))
+                                           query_params.gentle_merge(extras))
       return data
     end
     
@@ -137,7 +148,7 @@ module GoogleChart
     private
 
     def generate_query(extras={})
-      return query_params.merge(extras).collect { |k, v| "#{k}=#{URI.escape(v)}" }.join("&")
+      return query_params.gentle_merge(extras).collect { |k, v| "#{k}=#{URI.escape(v)}" }.join("&")
     end
 
     def add_defaults

@@ -23,10 +23,9 @@ module GoogleChart
           @data_length ||= data.length
           raise ArgumentError.new("Data must be of same length") unless @data_length == data.length
 
-          # "stack" the data on old data
-          @data_length.times { |i|
-            data[i] += @data[-1][i]
-          } unless @data.length == 0
+#          @data_length.times { |i|
+#            data[i] += @data[-1][i]
+#          } unless @data.length == 0
 
           @data << data
           legend(legend)
@@ -40,13 +39,22 @@ module GoogleChart
 
           # only perform the special encode on the data once
           if !@encoded
+            @data.reverse!
+            
             @data_length.times { |i|
               # re-format the data
-
-              local_max = @data[total_entries-1][i].to_f
-
+              
+              local_max = 0.0
               total_entries.times { |j|
-                @data[j][i] = @data[j][i].to_f / local_max
+                local_max += @data[j][i].to_f
+              }
+              puts local_max
+
+              last_data = 0.0
+              total_entries.times { |j|
+                t = @data[j][i]
+                @data[j][i] = (last_data + @data[j][i].to_f) / local_max
+                last_data += t
               }
             }
 
@@ -64,7 +72,8 @@ module GoogleChart
           
           @params[:chm] ||= []
           @area_colors.size.times { |i|
-            @params[:chm] << "b,#{@area_colors[i]},#{i},#{i+1},0"
+            # since we reverse our data, we need reverse 
+            @params[:chm] << "b,#{@area_colors[-(i+1)]},#{i},#{i+1},0"
           }
           @params[:chm] = @params[:chm].join('|')
           super
