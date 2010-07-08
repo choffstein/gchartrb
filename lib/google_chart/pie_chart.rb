@@ -40,5 +40,10 @@ module GoogleChart
         label(label)
         color(color)
       end
+      
+      def encode_data  
+          self.min = 0.0
+          super
+      end
     end
 end
